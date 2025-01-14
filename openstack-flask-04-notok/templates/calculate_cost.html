@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Calculate Cost{% endblock %}
+
+{% block content %}
+<h1>Calculate Resource Cost</h1>
+
+<form id="cost-calculator" method="POST" action="/calculate_cost">
+   <label for="instance_usage_time">Instance Usage Time (seconds):</label><br/>
+   <input type="number" id="instance_usage_time" name="instance_usage_time" required><br/>
+
+   <label for="storage_usage">Storage Usage (GB):</label><br/>
+   <input type="number" id="storage_usage" name="storage_usage" required><br/>
+
+   <label for="data_transferred">Data Transferred (GB):</label><br/>
+   <input type="number" id="data_transferred" name="data_transferred" required><br/>
+
+   <input type="submit" value="Calculate Cost">
+</form>
+
+<div id="cost-result"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+   $('#cost-calculator').on('submit', function(event) {
+       event.preventDefault();
+       const formData = {
+           instance_usage_time: $('#instance_usage_time').val(),
+           storage_usage: $('#storage_usage').val(),
+           data_transferred: $('#data_transferred').val()
+       };
+
+       $.ajax({
+           type: 'POST',
+           url: '/calculate_cost',
+           contentType: 'application/json',
+           data: JSON.stringify(formData),
+           success: function(response) {
+               $('#cost-result').html('<h3>Total Cost: $' + response.total_cost.toFixed(2) + '</h3>');
+           },
+           error: function(error) {
+               $('#cost-result').html('<h3>Error calculating cost.</h3>');
+           }
+       });
+   });
+});
+</script>
+
+<a href="/">Back to Home</a>
+
+{% endblock %}

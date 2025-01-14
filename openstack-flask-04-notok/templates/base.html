@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>OpenStack Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">OpenStack Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="cloudDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Cloud
+                </a>
+                <div class="dropdown-menu" aria-labelledby="cloudDropdown">
+                    <a class="dropdown-item" href="/instances">List Instances</a>
+                    <a class="dropdown-item" href="/create_instance_page">Create Instance</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#createProjectModal">Project</a> <!-- Open project modal -->
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Create Project Modal -->
+<div class="modal fade" id="createProjectModal" tabindex="-1" role="dialog" aria-labelledby="createProjectModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Create OpenStack Project</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form action="/create_project" method='post'>
+                  <div class='form-group'>
+                      <label for='project_name'>Project Name:</label>
+                      <input type='text' class='form-control' id='project_name' name='project_name' required />
+                  </div>
+
+                  <!-- Add other project fields as needed -->
+
+                  <button type='submit' class='btn btn-primary'>Create Project</button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class='container'>
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Load jQuery before Bootstrap JS -->
+<script src='https://code.jquery.com/jquery-3.5.1.min.js'></script> <!-- Full version -->
+<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>
+
+<script type='text/javascript'>
+    $(document).ready(function() {
+        // Fetch images, flavors, networks, and SSH keys when the Create Instance modal is opened
+        $('#createInstanceModal').on('show.bs.modal', function() {
+            $('#image').empty(); // Clear previous options
+            $('#flavor').empty();
+            $('#network').empty();
+            $('#ssh_key').empty();
+    
+            // Fetch images
+            $.get("/api/images", function(data) {
+                $.each(data.images, function(index, image) {
+                    $('#image').append($('<option>', { value: image.id, text: image.name }));
+                });
+            });
+    
+            // Fetch flavors
+            $.get("/api/flavors", function(data) {
+                $.each(data.flavors, function(index, flavor) {
+                    $('#flavor').append($('<option>', { value: flavor.id, text: flavor.name }));
+                });
+            });
+    
+            // Fetch networks
+            $.get("/api/networks", function(data) {
+                $.each(data.networks, function(index, network) {
+                    $('#network').append($('<option>', { value: network.id, text: network.name }));
+                });
+            });
+    
+            // Fetch SSH keys
+            $.get("/api/keys", function(data) {
+                $.each(data.keys, function(index, key) {
+                    $('#ssh_key').append($('<option>', { value: key.name, text: key.name }));
+                });
+            });
+        });
+    
+        // Optionally, you can also add similar functionality for the Create Project modal or any other interactions.
+    });
+    </script>
+    
+
+</body>
+</html>
+

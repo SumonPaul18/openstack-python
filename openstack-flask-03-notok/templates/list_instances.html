@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Instances</h2>
+
+<form method='GET' action='/instances'>
+  <input type='text' name='search' placeholder='Search instances...' class='form-control mb-3' />
+  <button type='submit' class='btn btn-primary'>Search</button>
+</form>
+
+<table class='table table-striped'>
+  <thead>
+      <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Actions</th> <!-- Added Actions column -->
+      </tr>
+  </thead>
+  <tbody>
+      {% for instance in instances %}
+          <tr>
+              <td>{{ instance.name }}</td>
+              <td>{{ instance.status }}</td>
+              <!-- Added delete button -->
+              <td><a href="#" onclick='deleteInstance("{{ instance.id }}")' class='btn btn-danger'>Delete</a></td> 
+          </tr> 
+      {% endfor %}
+  </tbody> 
+</table>
+
+<script type='text/javascript'>
+function deleteInstance(instanceId) {
+  if (confirm('Are you sure you want to delete this instance?')) {
+      fetch(`/instances/${instanceId}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(data => {
+              alert(data.status || data.error);
+              location.reload(); // Refresh the page to see the updated list
+          });
+  }
+}
+</script>
+
+{% endblock %}

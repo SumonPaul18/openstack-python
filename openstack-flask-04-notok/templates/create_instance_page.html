@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Create OpenStack Instance</h2>
+
+<form action="/create_instance" method='post'>
+  <div class='form-group'>
+      <label for='name'>Instance Name:</label>
+      <input type='text' class='form-control' id='name' name='name' required />
+  </div>
+
+  <div class='form-group'>
+      <label for='image'>Image:</label>
+      <select class='form-control' id='image' name='image' required></select> <!-- Populate via JavaScript -->
+  </div>
+
+  <div class='form-group'>
+      <label for='flavor'>Flavor:</label>
+      <select class='form-control' id='flavor' name='flavor' required></select> <!-- Populate via JavaScript -->
+  </div>
+
+  <div class='form-group'>
+      <label for='network'>Network:</label>
+      <select class='form-control' id='network' name='network' required></select> <!-- Populate via JavaScript -->
+  </div>
+
+  <div class='form-group'>
+      <label for='ssh_key'>Select SSH Key:</label>
+      <select class='form-control' id='ssh_key' name='ssh_key' required></select> <!-- Populate via JavaScript -->
+  </div>
+
+  <!-- Button to create SSH Key -->
+  <button type='button' class='btn btn-secondary mb-3' data-toggle='modal' data-target='#createSSHKeyModal'>Create SSH Key</button>
+
+  <!-- Create SSH Key Modal -->
+  <div class="modal fade" id="createSSHKeyModal" tabindex="-1" role="dialog" aria-labelledby="createSSHKeyModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">Create SSH Key Pair</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <form action="/create_ssh_key" method='post'>
+                      <div class='form-group'>
+                          <label for='key_name'>Key Name:</label>
+                          <input type='text' class='form-control' id='key_name' name='key_name' required />
+                      </div>
+
+                      <!-- Add other fields if necessary -->
+
+                      <button type='submit' class='btn btn-primary'>Create SSH Key</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <!-- Submit button -->
+  <button type='submit' class='btn btn-primary'>Create Instance</button> 
+</form>
+
+<script type='text/javascript'>
+$(document).ready(function() {
+   // Fetch images, flavors, networks, and SSH keys when the page loads
+   $.get("/api/images", function(data) {
+       $.each(data.images, function(index, image) {
+           $('#image').append($('<option>', { value: image.id, text: image.name }));
+       });
+   });
+
+   $.get("/api/flavors", function(data) {
+       $.each(data.flavors, function(index, flavor) {
+           $('#flavor').append($('<option>', { value: flavor.id, text: flavor.name }));
+       });
+   });
+
+   $.get("/api/networks", function(data) {
+       $.each(data.networks, function(index, network) {
+           $('#network').append($('<option>', { value: network.id, text: network.name }));
+       });
+   });
+
+   $.get("/api/keys", function(data) {
+       $.each(data.keys, function(index, key) {
+           $('#ssh_key').append($('<option>', { value: key.name, text: key.name }));
+       });
+   });
+});
+</script>
+
+{% endblock %}
