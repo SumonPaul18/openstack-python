@@ -1,3 +1,15 @@
+# How to Run the openstack-flask apps
+
+~~~
+rm -rf openstack-flask
+git clone https://github.com/SumonPaul18/openstack-flask.git
+cd openstack-flask
+pip install -r requirements.txt
+python app.py
+~~~
+---
+# Details:
+
 # Python OpenStack
 ```
 apt install python3-virtualenv
