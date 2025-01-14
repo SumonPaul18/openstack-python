@@ -1,9 +1,19 @@
-# How to Run the openstack-flask apps
+# How to Run the openstack-flask apps on Docker
 
 ~~~
 rm -rf openstack-flask
 git clone https://github.com/SumonPaul18/openstack-flask.git
-cd openstack-flask
+cd openstack-flask/openstack-flask-01-ok
+docker compose up -d
+docker compose ps
+~~~
+
+# How to Run the openstack-flask apps on Host
+
+~~~
+rm -rf openstack-flask
+git clone https://github.com/SumonPaul18/openstack-flask.git
+cd openstack-flask/openstack-flask-01-ok
 pip install -r requirements.txt
 python app.py
 ~~~

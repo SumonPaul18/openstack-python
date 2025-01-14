@@ -1,3 +1,23 @@
+# How to Run the openstack-flask apps on Docker
+
+~~~
+rm -rf openstack-flask
+git clone https://github.com/SumonPaul18/openstack-flask.git
+cd openstack-flask/openstack-flask-02-notok
+docker compose up -d
+docker compose ps
+~~~
+
+# How to Run the openstack-flask apps on Host
+
+~~~
+rm -rf openstack-flask
+git clone https://github.com/SumonPaul18/openstack-flask.git
+cd openstack-flask/openstack-flask-02-notok
+pip install -r requirements.txt
+python app.py
+~~~
+
 # Python OpenStack
 ```
 apt install python3-virtualenv
