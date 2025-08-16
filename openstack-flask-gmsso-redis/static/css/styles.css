@@ -1,0 +1,46 @@
+/* custom.css */
+.my-custom-navbar {
+  background-color: #6fc5ed; /* Custom background color */
+  color: #333; /* Custom text color */
+}
+/* static/css/styles.css */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+}
+
+.navbar-item img {
+  max-height: 40px;
+}
+
+.navbar-item .image.is-rounded {
+  margin-right: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.navbar-item .navbar-link {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-item .navbar-link span {
+  margin-left: 10px;
+}
+
+.navbar-burger {
+  color: #4a4a4a;
+}
+
+.navbar-burger:hover {
+  color: #3273dc;
+}
+
+.navbar-end .navbar-item {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-end .navbar-item .button {
+  margin-left: 10px;
+}
