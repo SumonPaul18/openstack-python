@@ -1,109 +1,219 @@
-Flask Web Application with Dashboard, Google/Email Auth, and Redis Session Management
-This project is a full-stack web application built using the Flask framework. The main objective is to create a robust and secure authentication system that supports both traditional email/password registration and modern social login via Google. The application features a dynamic dashboard accessible only to authenticated users, with a scalable session management system powered by Redis for a seamless user experience.
+```markdown
+# OpenStack Cloud Management Portal with Google & Email Authentication
 
-The long-term plan is to expand this project into a microservices architecture, where the authentication service (this project) can be integrated with other services for a complete Single Sign-On (SSO) solution. The primary goal is to provide a highly scalable, secure, and user-friendly authentication foundation for future projects.
+A Flask-based web application that integrates **OpenStack cloud management** with **Google OAuth** and **email/password authentication**. This portal automatically provisions OpenStack users and projects upon user signup, enabling a seamless cloud experience similar to AWS or GCP.
 
-🌟 Features
-User Authentication:
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![OpenStack](https://img.shields.io/badge/OpenStack-187BFF?style=for-the-badge&logo=openstack&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 
-Google Sign-in: Fast and secure login using Google's OAuth 2.0.
+---
 
-Email/Password Login: Traditional registration and authentication with email verification.
+## 🌟 Features
 
-Password Reset: Secure password recovery functionality.
+- ✅ **User Authentication**
+  - Google Sign-In via OAuth 2.0
+  - Email & Password Registration with confirmation
+  - Password reset functionality
+- ✅ **OpenStack Integration**
+  - Automatic **OpenStack user** creation on signup
+  - Automatic **project (tenant)** creation
+  - User assigned as `member`, admin assigned as `admin` of the project
+  - Default project set for each user
+- ✅ **Session Management**
+  - Redis-backed session storage for scalability
+  - Secure session handling with Flask-Session
+- ✅ **Email Confirmation & Reset**
+  - Email sent via Gmail SMTP
+  - Token-based confirmation and password reset
+- ✅ **Dashboard Access**
+  - Protected dashboard for authenticated users
+  - Future-ready for cloud resource display (VMs, Networks, Volumes)
 
-Session Management: Scalable and distributed session handling using Redis and Flask-Session.
+---
 
-Secure Dashboard: A protected area accessible only to logged-in users.
+## 🛠️ Technology Stack
 
-Database: SQLite via Flask-SQLAlchemy for storing user and OAuth data.
+| Layer | Technology |
+|------|------------|
+| **Backend** | Python, Flask |
+| **Database** | SQLite (Flask-SQLAlchemy) |
+| **Authentication** | Flask-Login, Flask-Dance (Google OAuth) |
+| **Session Storage** | Redis |
+| **Email** | Flask-Mail (Gmail SMTP) |
+| **OpenStack SDK** | openstacksdk |
+| **Frontend** | HTML, CSS, JavaScript, Bootstrap |
+| **Environment** | `.env` file for secrets |
 
-Configuration: Sensitive information is managed securely using environment variables from a .env file.
+---
 
-🛠️ Technology Stack
-Backend: Python, Flask
+## 📁 Project Structure
 
-Database: SQLite (managed by Flask-SQLAlchemy)
+```
+openstack-flask-gmsso-redis/
+├── .env                    # Environment variables
+├── app.py                  # Application entry point
+├── main.py                 # Core logic: auth, OpenStack integration
+├── dashboard.py            # Dashboard routes
+├── requirements.txt        # Python dependencies
+├── clouds.yaml             # OpenStack cloud configuration
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+└── templates/
+    ├── login.html
+    ├── signup.html
+    ├── dashboard.html
+    ├── reset_password.html
+    └── ...                 # Other HTML templates
+```
 
-Session Store: Redis
+---
 
-Authentication: Flask-Login, Flask-Dance (Google OAuth)
+## 🚀 Getting Started
 
-Email Service: Flask-Mail
+### 1. Clone the Repository
 
-🚀 Setup Guide
-Follow these steps to set up and run the project on your local machine.
+```bash
+git clone https://github.com/yourusername/openstack-flask-gmsso-redis.git
+cd openstack-flask-gmsso-redis
+```
 
-Prerequisites
-Python 3.8+
+### 2. Create a Virtual Environment
 
-pip (Python package installer)
-
-A running Redis server (e.g., at IP address 192.168.0.207 on port 6379).
-
-Installation
-Clone the repository:
-
-git clone <YOUR-REPOSITORY-URL>
-cd openstack-python-flask-gmsso-redis
-
-Create and activate a virtual environment:
-
+```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # Linux/Mac
+# or
+venv\Scripts\activate     # Windows
+```
 
-Install dependencies:
-Install all required Python packages from the requirements.txt file.
+### 3. Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-Configure Environment Variables:
-Create a .env file in the project's root directory and fill in your information based on the example below:
+### 4. Configure Environment Variables
 
-SECRET_KEY="your_flask_secret_key_here"
-GOOGLE_CLIENT_ID="your_google_client_id"
-GOOGLE_CLIENT_SECRET="your_google_client_secret"
-MAIL_SERVER="smtp.gmail.com"
+Create a `.env` file in the root directory:
+
+```env
+SECRET_KEY=your_flask_secret_key
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+OAUTHLIB_RELAX_TOKEN_SCOPE=1
+OAUTHLIB_INSECURE_TRANSPORT=1
+MAIL_SERVER=smtp.gmail.com
 MAIL_PORT=587
-MAIL_USERNAME="your_email@gmail.com"
-MAIL_PASSWORD="your_email_app_password"
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_USE_TLS=True
+MAIL_USE_SSL=False
+REDIS_HOST=192.168.0.207
+```
 
-Note: It's highly recommended to use a Google App Password for MAIL_PASSWORD instead of your regular email password for security.
+> 🔐 Use Gmail App Password for `MAIL_PASSWORD` if 2FA is enabled.
 
-Set up the database:
-Run the following command to create the database tables. This will create a signup-update8.db file.
+### 5. Create OpenStack Configuration
 
+Create `clouds.yaml` in the project root:
+
+```yaml
+clouds:
+  openstack:
+    auth:
+      auth_url: http://192.168.0.200:5000/v3
+      username: admin
+      password: your_admin_password
+      project_name: admin
+      user_domain_name: Default
+      project_domain_name: Default
+    region_name: RegionOne
+    interface: public
+    identity_api_version: 3
+```
+
+### 6. Initialize the Database
+
+```bash
 python app.py --setup
+```
 
-Run the application:
-Now you can run the application.
+### 7. Run the Application
 
+```bash
 python app.py
+```
 
-The application will be running at http://0.0.0.0:5000. You can access it from your web browser at http://127.0.0.1:5000 or your machine's IP address (http://192.168.0.93:5000).
+Visit `http://localhost:5000` in your browser.
 
-📝 Usage
-For Developers
-Access the Dashboard: Once authenticated, users are redirected to the secure dashboard.
+---
 
-Run a Development Server: The application is configured to run in debug mode, providing automatic reloads on code changes.
+## 🔐 Usage
 
-Database Management: The SQLite database simplifies development, but it can easily be migrated to a more robust production-ready database like PostgreSQL or MySQL.
+| Action | Description |
+|-------|-------------|
+| **Sign Up** | Use email & password or Google to register |
+| **Email Confirmation** | Click the link in the confirmation email |
+| **Login** | Use registered credentials or Google |
+| **Password Reset** | Use "Forgot Password?" link on login page |
+| **Dashboard** | View your cloud services (future) |
 
-For Users
-Sign Up: Create an account using your email and a strong password. An email confirmation link will be sent for account activation.
+---
 
-Log In: Use your registered credentials or the Google Sign-in button to access your personalized dashboard.
+## 🔧 OpenStack Integration Logic
 
-Forgot Password: Utilize the password reset link on the login page to securely reset your password via email.
+When a user signs up:
+1. A new **OpenStack user** is created with the user's email.
+2. A new **project** is created (e.g., `project_1`).
+3. The user is assigned the `member` role in the project.
+4. The OpenStack `admin` user is assigned the `admin` role in the project.
+5. The project is set as the user's **default project**.
+6. User's OpenStack IDs are stored in the database for future access.
 
-Dashboard: After successful login, users gain access to their dedicated dashboard area.
+All this happens transparently — the user only interacts with the web portal.
 
-🤝 Contributing
-We welcome contributions! If you would like to contribute, please feel free to submit a pull request or open an issue.
+---
 
-📄 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+## 📈 Future Enhancements (Planned)
 
-✉️ Contact
-For any questions or support, please feel free to reach out to [Your Name/Email/GitHub Profile Link].
+- 🖥️ Display OpenStack VMs, Networks, and Volumes in the dashboard
+- 🔄 Auto-login to Horizon (OpenStack Dashboard) via token
+- 💳 Billing system based on resource usage
+- 🔐 Role-based access control (RBAC)
+- 📊 Real-time monitoring and metrics
+- 🌐 Microservices architecture for scalability
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please feel free to:
+- Submit bug reports
+- Suggest new features
+- Open pull requests
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
+
+---
+
+## ✉️ Contact
+
+For questions or support, contact:
+- **Name**: Sumon Paul
+- **Email**: sumonpaul267@gmail.com
+- **GitHub**: [github.com/sumonpaul](https://github.com/sumonpaul)
+
+---
+
+> 🚀 **Empowering cloud access with simplicity and security.**
+```
+
+---
