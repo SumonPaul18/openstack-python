@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Flask OAuth App{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <!-- Left Column: Responsive Image -->
+            <div class="column is-half">
+                <figure class="image is-4by3">
+                    <img src="{{ url_for('static', filename='images/oplab.png') }}" alt="Sign Up Image">
+                </figure>
+            </div>
+            <!-- Right Column: Signup Form -->
+            <div class="column is-half">
+                <div class="box">
+                    <div class="has-text-centered">
+                        <img src="{{ url_for('static', filename='images/pc.png') }}" alt="Company Logo" style="max-width: 150px;">
+                    </div>
+                    <h2 class="title has-text-centered">Sign Up</h2>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="notification is-{{ category }}">
+                            <button class="delete"></button>
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                    <form method="POST" action="{{ url_for('signup') }}" onsubmit="return validateForm()">
+                        <div class="field">
+                            <label class="label" for="username">Username:</label>
+                            <div class="control">
+                                <input class="input" type="text" id="username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="email">Email:</label>
+                            <div class="control">
+                                <input class="input" type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="password">Password:</label>
+                            <div class="control">
+                                <input class="input" type="password" id="password" name="password" oninput="validatePassword()" required>
+                                <p id="password-strength-text" class="password-strength"></p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="confirm_password">Confirm Password:</label>
+                            <div class="control">
+                                <input class="input" type="password" id="confirm_password" name="confirm_password" oninput="validateConfirmPassword()" required>
+                                <p id="confirm-password-text" class="password-strength"></p>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth" type="submit">Sign Up</button>
+                        </div>
+                    </form>
+                    <div class="control has-text-centered" style="margin-top: 20px;">
+                        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

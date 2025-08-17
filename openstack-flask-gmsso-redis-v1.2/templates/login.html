@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Flask OAuth App{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <!-- Left Column: Responsive Image -->
+            <div class="column is-half">
+                <figure class="image is-4by3">
+                    <img src="{{ url_for('static', filename='images/oplab.png') }}" alt="Login Image" class="responsive-image">
+                </figure>
+            </div>
+            <!-- Right Column: Login Form -->
+            <div class="column is-half">
+                <div class="box has-shadow">
+                    <div class="has-text-centered">
+                        <img src="{{ url_for('static', filename='images/pc.png') }}" alt="Company Logo" style="max-width: 150px;">
+                    </div>
+                    <h2 class="title has-text-centered">Login</h2>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="notification is-{{ category }}">
+                            <button class="delete"></button>
+                            {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                    
+                    <!-- Google Login Button -->
+                    <div class="control has-text-centered">
+                        <a href="{{ url_for('google.login') }}" class="button is-danger is-fullwidth">
+                            <span class="icon"><i class="fab fa-google"></i></span>
+                            <span>Continue with Google</span>
+                        </a>
+                    </div>
+
+                    <hr>
+
+                    <!-- Traditional Login Form -->
+                    <form method="POST" action="{{ url_for('login') }}">
+                        <div class="field">
+                            <label class="label" for="email">Email:</label>
+                            <div class="control">
+                                <input class="input" type="email" id="email" name="email" required placeholder="Enter your email">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="password">Password:</label>
+                            <div class="control">
+                                <input class="input" type="password" id="password" name="password" required placeholder="Enter your password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox" name="remember">
+                                Remember Me
+                            </label>
+                        </div>
+                        <div class="control">
+                            <button class="button is-primary is-fullwidth" type="submit">Login</button>
+                        </div>
+                    </form>
+
+                    <!-- Forgot Password Link -->
+                    <div class="control has-text-centered" style="margin-top: 10px;">
+                        <a class="button is-warning" href="{{ url_for('reset_password') }}">Forgot Password?</a>
+                    </div>
+
+                    <!-- Sign Up Link -->
+                    <div class="control has-text-centered" style="margin-top: 20px;">
+                        <p>Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include Font Awesome for Google Icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+    .responsive-image {
+        width: 100%;
+        height: auto;
+    }
+    .has-shadow {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+{% endblock %}
