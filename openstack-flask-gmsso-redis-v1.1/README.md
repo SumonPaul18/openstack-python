@@ -68,6 +68,7 @@ openstack-flask-gmsso-redis/
     ├── dashboard.html
     ├── reset_password.html
     └── ...                 # Other HTML templates
+
 ```
 
 ---
@@ -214,6 +215,3 @@ For questions or support, contact:
 ---
 
 > 🚀 **Empowering cloud access with simplicity and security.**
-```
-
----
