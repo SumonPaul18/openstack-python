@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="fw-bold fs-4 mb-4">Admin Dashboard</h1>
+
+    <!-- Latest Updates Section -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3 fw-bold">Latest Products</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Product 1 - Description of Product 1</li>
+                        <li class="list-group-item">Product 2 - Description of Product 2</li>
+                        <li class="list-group-item">Product 3 - Description of Product 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3 fw-bold">Latest Solutions</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Solution 1 - Description of Solution 1</li>
+                        <li class="list-group-item">Solution 2 - Description of Solution 2</li>
+                        <li class="list-group-item">Solution 3 - Description of Solution 3</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4 mb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3 fw-bold">Recent Notifications</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Notification 1 - Details about notification.</li>
+                        <li class="list-group-item">Notification 2 - Details about notification.</li>
+                        <li class="list-group-item">Notification 3 - Details about notification.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Blog Posts Section -->
+    <h3 class="fw-bold fs-4 my-3">Recent Blog Posts</h3>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="#" class="text-primary">Understanding Flask OAuth</a></td>
+                <td>John Doe</td>
+                <td>2025-01-01</td>
+            </tr>
+            <tr>
+                <td><a href="#" class="text-primary">Getting Started with Bulma CSS</a></td>
+                <td>Jane Smith</td>
+                <td>2025-01-02</td>
+            </tr>
+            <!-- Add more blog posts as needed -->
+        </tbody>
+    </table>
+
+    <!-- Additional content sections can be added here -->
+</div>
+
+{% endblock %}
