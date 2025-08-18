@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    # volumes: # Optional: for persistent Redis data
+    #   - redis_data:/data
+
+  flask-app:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      # Ensure your .env file is used or pass env vars here
+      # You might need to adjust the Redis URL in .env or here if using compose networking
+      # e.g., REDIS_URL=redis://redis:6379 inside the container if using service name
+    depends_on:
+      - redis
+    # volumes: # Optional: for live code reloading during development
+    #   - .:/app
+    # command: flask run --host=0.0.0.0 --reload --debugger # For dev with reloading
+
+    keycloak:
+     image: quay.io/keycloak/keycloak:latest # Check for latest stable version
+     environment:
+       KEYCLOAK_ADMIN: admin
+       KEYCLOAK_ADMIN_PASSWORD: admin
+     ports:
+       - "8080:8080"
+     command: start-dev
+     volumes:
+       - ./keycloak-data:/opt/keycloak/data/import
+  volumes:
+  redis_data:
