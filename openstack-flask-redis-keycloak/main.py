@@ -251,8 +251,7 @@ def index():
     return render_template('home.html') # Or your desired index template
 
 # Initialize database tables
-@app.before_first_request
-def create_tables():
+with app.app_context():
     db.create_all()
 
 if __name__ == '__main__':
