@@ -21,7 +21,7 @@ from flask_session import Session # Import Flask-Session
 import redis # Import redis library
 
 # --- Authlib imports for Keycloak ---
-from authlib.integrations.flask_client import OAuth
+from authlib.integrations.flask_client import OAuth as AuthlibOAuth
 from authlib.common.security import generate_token
 import requests # For fetching Keycloak configuration if needed
 # ------------------------------------
@@ -84,7 +84,7 @@ app.register_blueprint(google_blueprint, url_prefix="/login")
 
 
 # --- Keycloak Setup using Authlib ---
-oauth = OAuth(app) # Create an OAuth instance for Authlib
+oauth = AuthlibOAuth(app) # Create an OAuth instance for Authlib
 
 # Register Keycloak as an OAuth provider
 keycloak = oauth.register(

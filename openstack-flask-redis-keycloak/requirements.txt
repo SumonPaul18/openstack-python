@@ -9,6 +9,5 @@ python-dotenv==1.0.0
 Werkzeug==2.3.7
 itsdangerous==2.1.2
 openstacksdk
-
-Authlib==1.2.1 # বা সর্বশেষ সংস্করণ
-requests==2.31.0 # বা সর্বশেষ সংস্করণ
+Authlib==1.2.1 
+requests==2.31.0
