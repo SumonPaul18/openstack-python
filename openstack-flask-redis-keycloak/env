@@ -1,4 +1,3 @@
-```env
 SECRET_KEY=paulco.xyz
 GOOGLE_CLIENT_ID=1048320361381-eokhcbo4dqbjsifvvti4fjnq7mn7gm9m.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=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
@@ -10,14 +9,11 @@ MAIL_USERNAME=sumonpaul267@gmail.com
 MAIL_PASSWORD=vztx jcxa pxbt ycmh
 MAIL_USE_TLS=True
 MAIL_USE_SSL=Flase
-
 # Keycloak Configuration
 KEYCLOAK_CLIENT_ID=flask-client
 KEYCLOAK_CLIENT_SECRET=IaorRct2D2HrQaMvghRqaYVIoqPRCFDe
-KEYCLOAK_SERVER_URL=http://192.168.0.207:8080 # আপনার Keycloak সার্ভার URL
-KEYCLOAK_REALM=myflaskapp # আপনার তৈরি করা রিয়ালম নাম
-
-# OAuthLIB settings (যদি প্রয়োজন হয়, নিরাপত্তার জন্য প্রোডাকশনে সতর্ক হন)
+KEYCLOAK_SERVER_URL=http://192.168.0.207:8080 
+KEYCLOAK_REALM=myflaskapp 
+# OAuthLIB settings
 OAUTHLIB_RELAX_TOKEN_SCOPE=1
-OAUTHLIB_INSECURE_TRANSPORT=1 # শুধুমাত্র ডেভেলপমেন্টের জন্য
-```
+OAUTHLIB_INSECURE_TRANSPORT=1
